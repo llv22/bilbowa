@@ -869,6 +869,15 @@ int ArgPos(char *str, int argc, char **argv) {
   return -1;
 }
 
+/**
+ * count user clock time, refer to https://stackoverflow.com/questions/7918529/measuring-time-of-multi-threading-program.
+ */ 
+double user_clock(void) {
+  struct timeval t;
+  gettimeofday(&t, NULL);
+  return (1.0e-6*t.tv_usec + t.tv_sec);
+}
+
 int main(int argc, char **argv) {
   int i, lang_id;
   if (argc == 1) {
@@ -989,12 +998,12 @@ int main(int argc, char **argv) {
   if ((i = ArgPos((char *)"-learn-vocab-and-quit", argc, argv)) > 0) 
     learn_vocab_and_quit = atoi(argv[i + 1]);
 
-  clock_t t;
-  t = clock();
+  // as we use multi-threading, so cpu time of clock() may be wrong. refer to https://stackoverflow.com/questions/7918529/measuring-time-of-multi-threading-program.
+  double t;
+  t = user_clock();
   TrainModel();
-  t = clock() - t;
-  double time_taken = ((double)t)/CLOCKS_PER_SEC; // in seconds
-  printf("TrainModel() took %.2f seconds to execute \n", time_taken);
+  t = user_clock() - t;
+  printf("TrainModel() took %.2f seconds to execute \n", t);
 
   return 0;
 }
