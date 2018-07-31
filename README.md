@@ -38,3 +38,32 @@ This creates `bilbowa` and `bidist` in the `bin` directory.
 Run `bilbowa` to see the list of command line options.
 `bidist` is a modification of the distance module in the [word2vec package](https://github.com/danielfrg/word2vec). It receives 2 binary vectors (let's say English and French) as input, and for any given English word returns the list of the similar French words. Note that similar to the original distance module, it only works with the binary vectors (use `-binary 1` switch when calling `bilbowa` to train the system.)
 
+## Generation result
+
+```bash
+$ ./bilbowa -mono-train1 endata.txt -mono-train2 esdata.txt -par-train1 enes.en -par-train2 enes.es -output1 envec.txt -output2 esvec.txt -size 300 -window 5 -sample 1e-4 -negative 5 -binary 0 -adagrad 1 -xling-lambda 1 -epochs 10 -threads 3 -negative 5 -save-vocab1 en.vocab -save-vocab2 es.vocab -min-count 1
+Learning Vocab
+pre SortVocab
+Vocab size: 3378
+Words in train file: 1174846
+Done learning vocab
+Saving vocab
+Saving vocabulary with 3378 entries to en.vocab
+Initializing net....done.
+Initializing unigram table....done.
+Learning Vocab
+pre SortVocab
+Vocab size: 2985
+Words in train file: 1086334
+Done learning vocab
+Saving vocab
+Saving vocabulary with 2985 entries to es.vocab
+Initializing net....done.
+Initializing unigram table....done.
+Starting training.
+Alpha: 0.025000  Progress: 99.12%  (epoch 9) Updates (L1: 11.73M, L2: 11.75M) L1L2grad: 0.1533 Words/sec: 2.99K  
+Saving model to file: envec.txt
+
+Saving model to file: esvec.txt
+TrainModel() took 2136.58 seconds to execute 
+```
