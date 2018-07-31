@@ -18,6 +18,7 @@
 #include <math.h>
 #include <pthread.h>
 #include <unistd.h>
+#include <time.h>
 
 #define MAX_STRING 100
 #define EXP_TABLE_SIZE 1000
@@ -988,6 +989,12 @@ int main(int argc, char **argv) {
   if ((i = ArgPos((char *)"-learn-vocab-and-quit", argc, argv)) > 0) 
     learn_vocab_and_quit = atoi(argv[i + 1]);
 
+  clock_t t;
+  t = clock();
   TrainModel();
+  t = clock() - t;
+  double time_taken = ((double)t)/CLOCKS_PER_SEC; // in seconds
+  printf("TrainModel() took %.2f seconds to execute \n", time_taken);
+
   return 0;
 }
